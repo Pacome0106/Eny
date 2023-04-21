@@ -81,22 +81,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future verifyPassword() async {
+    print('1');
     await FirebaseFirestore.instance
         .collection('users')
-        .where('number', isEqualTo: number.text)
+        .where('number_or_email', isEqualTo: number.text)
         .where('password', isEqualTo: password.text)
         .get()
         .then((value) {
       for (var user in value.docs) {
+        print('2');
         userUid = {};
         userUid = user.data();
         setState(() {
           userUid;
+          print('xxxxxxxXx$userUid');
         });
       }
     });
+    print('3');
     if (userUid.isEmpty == true && count < 3) {
       count++;
+      print('4');
       notification(context, "Les identifiants sont fausses !!!", 50);
     }
     if (count == 3) {
@@ -106,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
           70);
       count = 0;
     }
+    print('5');
     if (userUid.isNotEmpty == true) {
       signIn();
     }
