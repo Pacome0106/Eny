@@ -67,7 +67,7 @@ class _AuthantPageState extends State<AuthantPage> {
                     Tab(text: "J'ai déjà un compte")
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: double.maxFinite,
                   height: 450,
                   child: TabBarView(

@@ -1,16 +1,9 @@
 // ignore_for_file: must_be_immutable, avoid_print, body_might_complete_normally_catch_error, deprecated_member_use, depend_on_referenced_packages
 
-import 'dart:typed_data';
 import 'package:eny/pages/accueil.dart';
 import 'package:eny/pages/similator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
-import '../widgets/notification.dart';
 
 BorderRadius borderRadius = BorderRadius.circular(10);
 SizedBox sizedbox = const SizedBox(height: 10);

@@ -1,8 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/auth/pages_Auth/login_screens.dart';
 import 'package:eny/pages/home_page.dart';
 import 'package:eny/widgets/notification.dart';
-import 'package:eny/widgets/scroll_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
@@ -49,10 +50,8 @@ class _VerificationState extends State<Verification> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
-          fontSize: 20,
-          color: Color.fromRGBO(30, 60, 87, 1),
-          fontWeight: FontWeight.w600),
+      textStyle: const TextStyle(
+          fontSize: 20, color: Color(0xFF1E3C57), fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.activColor),
         borderRadius: BorderRadius.circular(20),
@@ -60,13 +59,13 @@ class _VerificationState extends State<Verification> {
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+      border: Border.all(color: const Color(0xFF72B2EE)),
       borderRadius: BorderRadius.circular(8),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
+        color: const Color(0xFFEAEFF3),
       ),
     );
     return Scaffold(
@@ -154,7 +153,6 @@ class _VerificationState extends State<Verification> {
                     if (widget.source == "logup") {
                       logup();
                     }
-
                     print(pin);
                   } catch (e) {
                     notification(

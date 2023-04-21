@@ -1,8 +1,5 @@
 // ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
 
-import 'dart:typed_data';
-
-import 'package:eny/auth/pages_Auth/verification.dart';
 import 'package:eny/pages/home_page.dart';
 import 'package:eny/provider/dark_theme_provider.dart';
 import 'package:eny/widgets/dark_theme.dart';

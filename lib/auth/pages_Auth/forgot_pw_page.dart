@@ -177,7 +177,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       alignment: Alignment.center,
                       height: 50.0,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.activColor,
                       ),
                       child: AppTextLarge(

@@ -1,12 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print, unused_field
 
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/auth/pages_Auth/verification.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
