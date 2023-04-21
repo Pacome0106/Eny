@@ -32,13 +32,15 @@ class Verification extends StatefulWidget {
 
 class _VerificationState extends State<Verification> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   Future logup() async {
     final theuser = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance.collection('users').doc(theuser!.uid).set({
       'uid': theuser.uid,
       'name': widget.name,
-      'number': widget.number,
+      'number_or_email': widget.number,
       'password': widget.password,
+      'photo': '',
     });
   }
 

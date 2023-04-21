@@ -26,6 +26,9 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmePassword = TextEditingController();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   Future verify() async {
     showDialog(
       context: context,
@@ -75,7 +78,19 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future signupGoogle() async {
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: 30,
+            height: 30,
+            child: const CircularProgressIndicator.adaptive(),
+          ),
+        );
+      },
+    );
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
             clientId: DefaultFirebaseOptions.currentPlatform.iosClientId)
@@ -90,9 +105,20 @@ class _SignupPageState extends State<SignupPage> {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    logup();
+  }
+
+  Future logup() async {
+    final theuser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection('users').doc(theuser!.uid).set({
+      'uid': theuser.uid,
+      'name': theuser.displayName,
+      'number_or_email': theuser.email,
+      'password': '',
+      'photo': theuser.photoURL,
+    });
   }
 
   @override
@@ -169,7 +195,7 @@ class _SignupPageState extends State<SignupPage> {
                       alignment: Alignment.center,
                       height: 50.0,
                       width: double.infinity,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.activColor,
                       ),
                       child: AppTextLarge(

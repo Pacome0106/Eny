@@ -8,7 +8,9 @@ import 'package:eny/widgets/app_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../firebase_options.dart';
 import '../../pages/home_page.dart';
 import '../../widgets/app_text_large.dart';
 import '../../widgets/colors.dart';
@@ -26,7 +28,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final theuser = FirebaseAuth.instance.currentUser;
-
   TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
   final _fromKey = GlobalKey<FormState>();
@@ -111,6 +112,50 @@ class _LoginPageState extends State<LoginPage> {
     if (userUid.isNotEmpty == true) {
       signIn();
     }
+  }
+
+  Future signupGoogle() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: 30,
+            height: 30,
+            child: const CircularProgressIndicator.adaptive(),
+          ),
+        );
+      },
+    );
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+            clientId: DefaultFirebaseOptions.currentPlatform.iosClientId)
+        .signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    // Once signed in, return the UserCredential
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    logup();
+  }
+
+  Future logup() async {
+    final theuser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection('users').doc(theuser!.uid).set({
+      'uid': theuser.uid,
+      'name': theuser.displayName,
+      'number_or_email': theuser.email,
+      'password': '',
+      'photo': theuser.photoURL,
+    });
   }
 
   @override
@@ -228,6 +273,7 @@ class _LoginPageState extends State<LoginPage> {
                 GestureDetector(
                   onTap: () async {
                     //login onTap google
+                    signupGoogle();
                   },
                   child: Container(
                     alignment: Alignment.center,
