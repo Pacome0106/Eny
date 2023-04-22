@@ -32,32 +32,22 @@ class _LoginPageState extends State<LoginPage> {
   int count = 0;
 
   Future signIn() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Center(
-          child: Container(
-            alignment: Alignment.center,
-            width: 30,
-            height: 30,
-            child: const CircularProgressIndicator.adaptive(),
-          ),
-        );
-      },
-    );
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: number.text.trim(),
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         print(e.message);
         if (e.message == "TOO_SHORT") {
+          Navigator.of(context).pop();
           notification(context, "Votre numero n'est pas complet !!!", 50);
         } else if (e.message == "TOO_LONG") {
+          Navigator.of(context).pop();
           notification(
               context,
               "Code postal incorrect ou Votre numero dépasse la taille normale !!!",
               60);
         } else {
+          Navigator.of(context).pop();
           notification(context,
               "Une erreur s'est produite ! Veillez reessayé plutard !!!", 60);
         }
@@ -81,6 +71,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future verifyPassword() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: 30,
+            height: 30,
+            child: const CircularProgressIndicator.adaptive(),
+          ),
+        );
+      },
+    );
     print('1');
     await FirebaseFirestore.instance
         .collection('users')
