@@ -47,13 +47,16 @@ class _SignupPageState extends State<SignupPage> {
       verificationCompleted: (PhoneAuthCredential credential) {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.message == "TOO_SHORT") {
+          Navigator.of(context).pop();
           notification(context, "Votre numero n'est pas complet !!!", 50);
         } else if (e.message == "TOO_LONG") {
+          Navigator.of(context).pop();
           notification(
               context,
               "Code postal incorrect ou Votre numero dépasse la taille normale !!!",
               60);
         } else {
+          Navigator.of(context).pop();
           notification(context,
               "Une erreur s'est produite ! Veillez reessayé plutard !!!", 60);
         }

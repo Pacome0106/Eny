@@ -96,33 +96,61 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: tabs[widget.currentIndex],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 2,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        backgroundColor: Theme.of(context).backgroundColor,
-        selectedIconTheme:
-            IconThemeData(color: Theme.of(context).bottomAppBarColor, size: 30),
-        unselectedIconTheme:
-            IconThemeData(color: Theme.of(context).hoverColor, size: 25),
-        currentIndex: widget.currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.church),
-            label: 'Acceuil',
-            backgroundColor: Theme.of(context).backgroundColor,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 100.0, right: 100),
+        child: Container(
+          width: 200,
+          height: 80.0,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.timeline_sharp),
-            label: 'Similateur',
-            backgroundColor: Theme.of(context).backgroundColor,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              color: Colors.red,
+              child: BottomNavigationBar(
+                elevation: 2,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                backgroundColor: Theme.of(context).backgroundColor,
+                selectedIconTheme: IconThemeData(
+                    color: Theme.of(context).bottomAppBarColor, size: 30),
+                unselectedIconTheme: IconThemeData(
+                    color: Theme.of(context).hoverColor, size: 25),
+                currentIndex: widget.currentIndex,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.church),
+                    label: 'Acceuil',
+                    backgroundColor: Theme.of(context).backgroundColor,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.timeline_sharp),
+                    label: 'Similateur',
+                    backgroundColor: Theme.of(context).backgroundColor,
+                  ),
+                ],
+                onTap: (index) {
+                  setState(() {
+                    widget.currentIndex = index;
+                  });
+                },
+              ),
+            ),
           ),
-        ],
-        onTap: (index) {
-          setState(() {
-            widget.currentIndex = index;
-          });
-        },
+        ),
       ),
     );
   }
