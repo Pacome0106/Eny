@@ -5,6 +5,8 @@ import 'package:eny/pages/similator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/app_text_large.dart';
+
 BorderRadius borderRadius = BorderRadius.circular(10);
 SizedBox sizedbox = const SizedBox(height: 10);
 SizedBox sizedbox2 = const SizedBox(width: 10);
@@ -88,41 +90,64 @@ class _HomePageState extends State<HomePage> {
     //   getUser();
     //   coumpt++;
     // }
-    final tabs = [
-      const Acceuil(),
-      const Similator(),
-    ];
+
     return Scaffold(
       body: SafeArea(
-        child: tabs[widget.currentIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 2,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        backgroundColor: Theme.of(context).backgroundColor,
-        selectedIconTheme:
-            IconThemeData(color: Theme.of(context).bottomAppBarColor, size: 30),
-        unselectedIconTheme:
-            IconThemeData(color: Theme.of(context).hoverColor, size: 25),
-        currentIndex: widget.currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.church),
-            label: 'Acceuil',
-            backgroundColor: Theme.of(context).backgroundColor,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.timeline_sharp),
-            label: 'Similateur',
-            backgroundColor: Theme.of(context).backgroundColor,
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            widget.currentIndex = index;
-          });
-        },
+        child: DefaultTabController(
+          length: 2,
+          child: Stack(alignment: Alignment.bottomCenter, children: [
+            const TabBarView(
+              children: [
+                Acceuil(),
+                Similator(),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: 160,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 1,
+                      offset: Offset(1, 4), // Shadow position
+                    ),
+                  ],
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                child: ClipPath(
+                  clipper: const ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(40),
+                        topLeft: Radius.circular(40),
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
+                      ),
+                    ),
+                  ),
+                  child: TabBar(
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicator: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    mouseCursor: MouseCursor.uncontrolled,
+                    indicatorColor: Theme.of(context).hintColor,
+                    labelColor: Theme.of(context).hintColor,
+                    unselectedLabelColor: Theme.of(context).hoverColor,
+                    tabs: const [
+                      Tab(child: Icon(Icons.home, size: 35)),
+                      Tab(child: Icon(Icons.timeline_sharp, size: 35)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

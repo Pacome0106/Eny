@@ -25,7 +25,7 @@ class Styles {
           isDarkTheme ? const Color(0xFF404D65) : AppColors.simpleFondColor,
       dividerColor: isDarkTheme ? const Color(0xFF808995) : Colors.white,
       bottomAppBarColor:
-          isDarkTheme ? AppColors.activColor : AppColors.mainTextColor,
+          isDarkTheme ? AppColors.activColor : AppColors.activColor,
       disabledColor:
           isDarkTheme ? AppColors.mainColor : AppColors.mainTextColor,
       highlightColor: Colors.transparent,

@@ -115,15 +115,12 @@ class _AcceuilState extends State<Acceuil> {
                   Container(
                     padding: const EdgeInsets.only(top: 20),
                     width: double.maxFinite,
-                    height: 320,
+                    height: 290,
                     child: TabBarView(
                       children: [
-                        DeveloperChart(
-                          data: data,
-                        ),
+                        DeveloperChart(data: data),
                         DeveloperChart2(data2: data2),
                         DeveloperChart3(data3: data3),
-
                         // LoginPage(),
                       ],
                     ),
@@ -135,7 +132,7 @@ class _AcceuilState extends State<Acceuil> {
                       Container(
                         padding: const EdgeInsets.only(
                             top: 5.0, left: 5.0, right: 5.0),
-                        width: 180,
+                        width: MediaQuery.of(context).size.width * 0.42,
                         height: 75,
                         decoration: BoxDecoration(
                           border: Border.all(width: 2, color: Colors.grey),
@@ -173,7 +170,7 @@ class _AcceuilState extends State<Acceuil> {
                       Container(
                         padding: const EdgeInsets.only(
                             top: 5.0, left: 5.0, right: 5.0),
-                        width: 180,
+                        width: MediaQuery.of(context).size.width * 0.42,
                         height: 75,
                         decoration: BoxDecoration(
                           border: Border.all(width: 2, color: Colors.grey),
@@ -214,12 +211,12 @@ class _AcceuilState extends State<Acceuil> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      card(100, 120, '22.5', 'jaz', Colors.red, Colors.black,
-                          16, 15),
-                      card(100, 120, '0.0', 'jaz', Colors.red, Colors.black, 16,
-                          15),
-                      card(100, 120, '0.0', 'jaz', Colors.red, Colors.black, 16,
-                          15),
+                      card(MediaQuery.of(context).size.width * 0.26, 120,
+                          '22.5', 'jaz', Colors.red, Colors.black, 16, 15),
+                      card(MediaQuery.of(context).size.width * 0.26, 120, '0.0',
+                          'jaz', Colors.red, Colors.black, 16, 15),
+                      card(MediaQuery.of(context).size.width * 0.26, 120, '0.0',
+                          'jaz', Colors.red, Colors.black, 16, 15),
                     ],
                   ),
                 ],
@@ -242,11 +239,12 @@ class _AcceuilState extends State<Acceuil> {
     double radius,
   ) {
     return Container(
+      margin: const EdgeInsets.all(5.0),
       padding: const EdgeInsets.all(5.0),
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(35.0),
+        borderRadius: BorderRadius.circular(30.0),
         color: const Color(0xFFD6D3D3),
         boxShadow: const [
           BoxShadow(
