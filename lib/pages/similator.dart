@@ -229,7 +229,10 @@ class _SimilatorState extends State<Similator> {
                     color: Colors.black,
                     child: Center(
                       child: AppTextLarge(
-                          text: 'Enregistrer', color: Colors.white, size: 16),
+                        text: 'Enregistrer',
+                        color: Colors.white,
+                        size: 16,
+                      ),
                     ),
                   ),
                 ),
