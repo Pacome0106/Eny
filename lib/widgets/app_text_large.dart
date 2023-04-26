@@ -18,11 +18,12 @@ class AppTextLarge extends StatelessWidget {
     return Text(
       text!,
       style: TextStyle(
-          color: color,
-          fontSize: size,
-          fontFamily: 'Nunito',
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0),
+        color: color,
+        fontSize: size,
+        fontFamily: 'Nunito',
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0,
+      ),
     );
   }
 }
