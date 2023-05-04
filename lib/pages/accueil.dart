@@ -1,13 +1,21 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/pages/home_page.dart';
 import 'package:eny/provider/dark_theme_provider.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/developper_chart.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/selected_image_user.dart';
 import '../widgets/colors.dart';
 
 class Acceuil extends StatefulWidget {
@@ -18,18 +26,84 @@ class Acceuil extends StatefulWidget {
 }
 
 class _AcceuilState extends State<Acceuil> {
+  Map<String, dynamic>? userData;
+  final theuser = FirebaseAuth.instance.currentUser;
+  final ImagePicker _picker = ImagePicker();
+  File? imagePath;
+  bool isUser = false;
+
+  Future getUser() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(theuser!.uid)
+        .get()
+        .then((value) {
+      userData = value.data();
+    });
+    if (userData != null) {
+      isUser = true;
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        userData;
+        isUser;
+      });
+    }
+    print(userData!['name']);
+  }
+
+  selectImages(
+      String name, String number_or_email, String password, String uid) async {
+    final image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return null;
+    } else {
+      File? img = File(image.path);
+      setState(() {
+        imagePath = img;
+      });
+    }
+    if (imagePath != null) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SelectedImageUser(
+              imagePath!.path,
+              name: name,
+              number_or_email: number_or_email,
+              password: password,
+              uid: uid,
+            ),
+          ),
+          (route) => false);
+    } else {
+      // print("error");
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     bool isTheme = themeChange.darkTheme;
+
     final List<DeveloperSeries> data = [
-      DeveloperSeries(year: "Sol", developers: 40000),
-      DeveloperSeries(year: "Hyd", developers: 5000),
-      DeveloperSeries(year: "Eol", developers: 40000),
-      DeveloperSeries(year: "Geo", developers: 35000),
-      DeveloperSeries(year: "Ther", developers: 45000),
-      DeveloperSeries(year: "Bio", developers: 25000),
-      DeveloperSeries(year: "Nuc", developers: 15000),
+      DeveloperSeries(year: "Sol", developers: 3),
+      DeveloperSeries(year: "Hyd", developers: 0),
+      DeveloperSeries(year: "Eol", developers: 0),
+      DeveloperSeries(year: "Geo", developers: 0),
+      DeveloperSeries(year: "Ther", developers: 0),
+      DeveloperSeries(year: "Bio", developers: 95),
+      DeveloperSeries(year: "Nuc", developers: 0),
     ];
     final List<DeveloperSeries> data2 = [
       DeveloperSeries(year: "Sol", developers: 10000),
@@ -41,13 +115,13 @@ class _AcceuilState extends State<Acceuil> {
       DeveloperSeries(year: "Nuc", developers: 15000),
     ];
     final List<DeveloperSeries> data3 = [
-      DeveloperSeries(year: "Sol", developers: 5000),
-      DeveloperSeries(year: "Hyd", developers: 1000),
-      DeveloperSeries(year: "Eol", developers: 8000),
-      DeveloperSeries(year: "Geo", developers: 7000),
-      DeveloperSeries(year: "Ther", developers: 2000),
-      DeveloperSeries(year: "Bio", developers: 6000),
-      DeveloperSeries(year: "Nuc", developers: 8000),
+      DeveloperSeries(year: "Sol", developers: 1),
+      DeveloperSeries(year: "Hyd", developers: 99),
+      DeveloperSeries(year: "Eol", developers: 1),
+      DeveloperSeries(year: "Geo", developers: 1),
+      DeveloperSeries(year: "Ther", developers: 2),
+      DeveloperSeries(year: "Bio", developers: 93),
+      DeveloperSeries(year: "Nuc", developers: 0),
     ];
     return DefaultTabController(
       length: 3,
@@ -125,39 +199,65 @@ class _AcceuilState extends State<Acceuil> {
                                               Container(
                                                 height: 140,
                                                 width: 140,
-                                                decoration: BoxDecoration(
-                                                  image: const DecorationImage(
-                                                      image: AssetImage(
-                                                          'images/profil.png')),
-                                                  color: Theme.of(context)
-                                                      .hoverColor,
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    color: Theme.of(context)
-                                                        .buttonColor,
-                                                    width: 2,
-                                                  ),
-                                                ),
+                                                decoration: isUser &&
+                                                        userData!['photo'] != ""
+                                                    ? BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              userData![
+                                                                  'photo']),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                        color: Theme.of(context)
+                                                            .hoverColor,
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .buttonColor,
+                                                          width: 2,
+                                                        ),
+                                                      )
+                                                    : BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .hoverColor,
+                                                        shape: BoxShape.circle,
+                                                        border: Border.all(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .buttonColor,
+                                                          width: 2,
+                                                        ),
+                                                      ),
                                               ),
                                               Positioned(
-                                                child: Container(
-                                                  height: 45.0,
-                                                  width: 45.0,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .hoverColor,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .buttonColor,
-                                                      width: 2,
-                                                    ),
+                                                child: InkWell(
+                                                  onTap: () => selectImages(
+                                                    userData!['name'],
+                                                    userData![
+                                                        'number_or_email'],
+                                                    userData!['password'],
+                                                    userData!['uid'],
                                                   ),
-                                                  child: const Icon(
-                                                      Icons.add_a_photo,
-                                                      color: AppColors
-                                                          .bigTextColor,
-                                                      size: 30),
+                                                  child: Container(
+                                                    height: 45.0,
+                                                    width: 45.0,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .hoverColor,
+                                                      shape: BoxShape.circle,
+                                                      border: Border.all(
+                                                        color: Theme.of(context)
+                                                            .buttonColor,
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Icon(
+                                                        Icons.add_a_photo,
+                                                        color: Theme.of(context)
+                                                            .hintColor,
+                                                        size: 25),
+                                                  ),
                                                 ),
                                               )
                                             ]),
@@ -172,70 +272,29 @@ class _AcceuilState extends State<Acceuil> {
                                                   color: Theme.of(context)
                                                       .bottomAppBarColor),
                                               const SizedBox(width: 20),
-                                              AppTextLarge(
-                                                text: 'Binja Zihalirwa Gisele',
-                                                color:
-                                                    Theme.of(context).hintColor,
-                                                size: 16,
-                                              )
+                                              isUser
+                                                  ? AppTextLarge(
+                                                      text: userData!['name'],
+                                                      color: Theme.of(context)
+                                                          .hintColor,
+                                                      size: 16,
+                                                    )
+                                                  : Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                      height: 16,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            borderRadius,
+                                                        color: Theme.of(context)
+                                                            .focusColor,
+                                                      ),
+                                                    ),
                                             ],
                                           ),
-                                        ),
-                                        sizedbox,
-                                        sizedbox,
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: Row(
-                                                children: [
-                                                  Icon(Icons.phone,
-                                                      size: 30,
-                                                      color: Theme.of(context)
-                                                          .bottomAppBarColor),
-                                                  const SizedBox(width: 20),
-                                                  AppTextLarge(
-                                                    text: '+243 975 024 769',
-                                                    color: Theme.of(context)
-                                                        .hintColor,
-                                                    size: 16,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .focusColor,
-                                                  child: const Icon(
-                                                    Icons.phone,
-                                                    size: 20,
-                                                    color: AppColors.activColor,
-                                                  ),
-                                                ),
-                                                sizedbox2,
-                                                CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .focusColor,
-                                                  child: const Icon(
-                                                    Icons.message_rounded,
-                                                    size: 20,
-                                                    color: AppColors.activColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
                                         ),
                                         sizedbox,
                                         sizedbox,
@@ -252,13 +311,31 @@ class _AcceuilState extends State<Acceuil> {
                                                       color: Theme.of(context)
                                                           .bottomAppBarColor),
                                                   const SizedBox(width: 20),
-                                                  AppTextLarge(
-                                                    text:
-                                                        'Giselebinja@gmail.com',
-                                                    color: Theme.of(context)
-                                                        .hintColor,
-                                                    size: 16,
-                                                  )
+                                                  isUser
+                                                      ? AppTextLarge(
+                                                          text: userData![
+                                                              'number_or_email'],
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .hintColor,
+                                                          size: 16,
+                                                        )
+                                                      : Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                          height: 16,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                borderRadius,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .focusColor,
+                                                          ),
+                                                        ),
                                                 ],
                                               ),
                                             ),
@@ -267,18 +344,6 @@ class _AcceuilState extends State<Acceuil> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                CircleAvatar(
-                                                  radius: 20,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .focusColor,
-                                                  child: const Icon(
-                                                    Icons.mail,
-                                                    size: 20,
-                                                    color: AppColors.activColor,
-                                                  ),
-                                                ),
-                                                sizedbox2,
                                                 CircleAvatar(
                                                   radius: 20,
                                                   backgroundColor:
@@ -294,6 +359,7 @@ class _AcceuilState extends State<Acceuil> {
                                             ),
                                           ],
                                         ),
+                                        sizedbox,
                                         GestureDetector(
                                           onTap: () async {
                                             showDialog(
@@ -333,7 +399,17 @@ class _AcceuilState extends State<Acceuil> {
                                                               .spaceBetween,
                                                       children: [
                                                         GestureDetector(
-                                                          onTap: () async {},
+                                                          onTap: () async {
+                                                            await FirebaseAuth
+                                                                .instance
+                                                                .signOut();
+                                                            Navigator
+                                                                .pushNamedAndRemoveUntil(
+                                                                    context,
+                                                                    '/',
+                                                                    (route) =>
+                                                                        false);
+                                                          },
                                                           child: Container(
                                                             padding:
                                                                 const EdgeInsets
@@ -370,7 +446,15 @@ class _AcceuilState extends State<Acceuil> {
                                                         sizedbox2,
                                                         sizedbox2,
                                                         GestureDetector(
-                                                          onTap: () {},
+                                                          onTap: () {
+                                                            setState(() {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pop();
+                                                            });
+                                                          },
                                                           child: Container(
                                                             padding:
                                                                 const EdgeInsets
@@ -456,15 +540,29 @@ class _AcceuilState extends State<Acceuil> {
                         child: Container(
                           height: 50,
                           width: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.grey),
-                          child: const Icon(Icons.person),
+                          decoration: isUser && userData!['photo'] != ""
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.grey,
+                                  image: DecorationImage(
+                                    image: NetworkImage(userData!['photo']),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.grey,
+                                ),
+                          child: isUser
+                              ? userData!['photo'] == ""
+                                  ? const Icon(Icons.person)
+                                  : null
+                              : null,
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   Container(
                     height: 45.0,
                     decoration: BoxDecoration(
@@ -484,21 +582,21 @@ class _AcceuilState extends State<Acceuil> {
                         Tab(
                           child: AppTextLarge(
                             text: '2005',
-                            color: Colors.black,
+                            color: Theme.of(context).hintColor,
                             size: 16,
                           ),
                         ),
                         Tab(
                           child: AppTextLarge(
                             text: '2018',
-                            color: Colors.black,
+                            color: Theme.of(context).hintColor,
                             size: 16,
                           ),
                         ),
                         Tab(
                           child: AppTextLarge(
                             text: '2022',
-                            color: Colors.black,
+                            color: Theme.of(context).hintColor,
                             size: 16,
                           ),
                         ),
@@ -518,7 +616,7 @@ class _AcceuilState extends State<Acceuil> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -538,23 +636,23 @@ class _AcceuilState extends State<Acceuil> {
                               children: [
                                 const CircleAvatar(
                                   radius: 20.0,
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: Color(0xFFF07649),
                                 ),
                                 AppTextLarge(
                                   size: 30,
-                                  text: '',
-                                  color: Colors.black,
+                                  text: '1',
+                                  color: Theme.of(context).hintColor,
                                 ),
                                 AppTextLarge(
                                   size: 14,
                                   text: '%',
-                                  color: Colors.black,
+                                  color: Theme.of(context).hintColor,
                                 ),
                               ],
                             ),
                             AppText(
-                              text: 'Geothermie ',
-                              color: Colors.black,
+                              text: 'Géothermie ',
+                              color: Theme.of(context).hintColor,
                               size: 16,
                             )
                           ],
@@ -576,23 +674,23 @@ class _AcceuilState extends State<Acceuil> {
                               children: [
                                 const CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Color(0xFF3CB7EB),
                                 ),
                                 AppTextLarge(
                                   size: 30,
-                                  text: '12.8',
-                                  color: Colors.black,
+                                  text: '90',
+                                  color: Theme.of(context).hintColor,
                                 ),
                                 AppTextLarge(
                                   size: 14,
                                   text: '%',
-                                  color: Colors.black,
+                                  color: Theme.of(context).hintColor,
                                 ),
                               ],
                             ),
                             AppText(
                               text: 'Hydrolique ',
-                              color: Colors.black,
+                              color: Theme.of(context).hintColor,
                               size: 16,
                             )
                           ],
@@ -602,14 +700,45 @@ class _AcceuilState extends State<Acceuil> {
                   ),
                   const SizedBox(height: 20),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      AppTextLarge(
+                          text: "Puissance de la R.D.C en (MW) :",
+                          size: 18,
+                          color: Theme.of(context).hintColor),
+                    ],
+                  ),
+                  sizedbox,
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      card(MediaQuery.of(context).size.width * 0.26, 120,
-                          '22.5', 'jaz', Colors.red, Colors.black, 16, 15),
-                      card(MediaQuery.of(context).size.width * 0.26, 120, '0.0',
-                          'jaz', Colors.red, Colors.black, 16, 15),
-                      card(MediaQuery.of(context).size.width * 0.26, 120, '0.0',
-                          'jaz', Colors.red, Colors.black, 16, 15),
+                      card(
+                          MediaQuery.of(context).size.width * 0.26,
+                          120,
+                          '3000',
+                          'Demandée',
+                          Colors.red,
+                          Theme.of(context).hintColor,
+                          16,
+                          15),
+                      card(
+                          MediaQuery.of(context).size.width * 0.26,
+                          120,
+                          '2442',
+                          'Installée',
+                          Colors.red,
+                          Theme.of(context).hintColor,
+                          16,
+                          15),
+                      card(
+                          MediaQuery.of(context).size.width * 0.26,
+                          120,
+                          '1281',
+                          'Fournie',
+                          Colors.red,
+                          Theme.of(context).hintColor,
+                          16,
+                          15),
                     ],
                   ),
                 ],
@@ -649,20 +778,17 @@ class _AcceuilState extends State<Acceuil> {
       ),
       child: Column(
         children: [
-          CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.white,
-            child: const Icon(
-              Icons.edit,
-              size: 20,
-            ),
+          Icon(
+            Icons.energy_savings_leaf_rounded,
+            size: 25,
+            color: Theme.of(context).canvasColor,
           ),
           AppTextLarge(
-            size: 35,
+            size: 30,
             text: titre,
             color: color1,
           ),
-          AppText(
+          AppTextLarge(
             text: text,
             color: color2,
             size: size,

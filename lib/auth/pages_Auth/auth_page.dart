@@ -63,8 +63,8 @@ class _AuthantPageState extends State<AuthantPage> {
                   unselectedLabelColor: Theme.of(context).hoverColor,
                   // isScrollable: true,
                   tabs: const [
+                    Tab(text: "J'ai déjà un compte"),
                     Tab(text: "Pour la première fois"),
-                    Tab(text: "J'ai déjà un compte")
                   ],
                 ),
                 const SizedBox(
@@ -73,8 +73,8 @@ class _AuthantPageState extends State<AuthantPage> {
                   child: TabBarView(
                     clipBehavior: Clip.hardEdge,
                     children: [
-                      SignupPage(),
                       LoginPage(),
+                      SignupPage(),
                     ],
                   ),
                 )

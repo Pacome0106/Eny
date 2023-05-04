@@ -109,6 +109,7 @@ class _SignupPageState extends State<SignupPage> {
     );
     // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
+    Navigator.of(context).pop();
     logup();
   }
 
