@@ -97,31 +97,116 @@ class _AcceuilState extends State<Acceuil> {
     bool isTheme = themeChange.darkTheme;
 
     final List<DeveloperSeries> data = [
-      DeveloperSeries(year: "Sol", developers: 3),
-      DeveloperSeries(year: "Hyd", developers: 0),
-      DeveloperSeries(year: "Eol", developers: 0),
-      DeveloperSeries(year: "Geo", developers: 0),
-      DeveloperSeries(year: "Ther", developers: 0),
-      DeveloperSeries(year: "Bio", developers: 95),
-      DeveloperSeries(year: "Nuc", developers: 0),
+      DeveloperSeries(
+        year: "Pet",
+        developers: 31.4,
+        color: charts.ColorUtil.fromDartColor(Colors.deepOrangeAccent),
+      ),
+      DeveloperSeries(
+        year: "Cha",
+        developers: 29.0,
+        color: charts.ColorUtil.fromDartColor(Colors.blueGrey),
+      ),
+      DeveloperSeries(
+        year: "Gaz",
+        developers: 21.3,
+        color: charts.ColorUtil.fromDartColor(Colors.grey),
+      ),
+      DeveloperSeries(
+        year: "Bio",
+        developers: 10.0,
+        color: charts.ColorUtil.fromDartColor(Colors.greenAccent),
+      ),
+      DeveloperSeries(
+        year: "Nuc",
+        developers: 4.8,
+        color: charts.ColorUtil.fromDartColor(Colors.orange),
+      ),
+      DeveloperSeries(
+        year: "Hyd",
+        developers: 2.4,
+        color: charts.ColorUtil.fromDartColor(Colors.blue),
+      ),
+      DeveloperSeries(
+        year: "Aut",
+        developers: 1.1,
+        color: charts.ColorUtil.fromDartColor(Colors.lightBlue),
+      ),
     ];
+//----------
     final List<DeveloperSeries> data2 = [
-      DeveloperSeries(year: "Sol", developers: 10000),
-      DeveloperSeries(year: "Hyd", developers: 50000),
-      DeveloperSeries(year: "Eol", developers: 0000),
-      DeveloperSeries(year: "Geo", developers: 35000),
-      DeveloperSeries(year: "Ther", developers: 45000),
-      DeveloperSeries(year: "Bio", developers: 25000),
-      DeveloperSeries(year: "Nuc", developers: 15000),
+      DeveloperSeries(
+        year: "Pet",
+        developers: 2.9,
+        color: charts.ColorUtil.fromDartColor(Colors.deepOrangeAccent),
+      ),
+      DeveloperSeries(
+          year: "Cha",
+          developers: 38.2,
+          color: charts.ColorUtil.fromDartColor(Colors.blueGrey)),
+      DeveloperSeries(
+        year: "Gaz",
+        developers: 23.1,
+        color: charts.ColorUtil.fromDartColor(Colors.grey),
+      ),
+      DeveloperSeries(
+        year: "Nuc",
+        developers: 10.2,
+        color: charts.ColorUtil.fromDartColor(Colors.orange),
+      ),
+      DeveloperSeries(
+        year: "Hyd",
+        developers: 15.8,
+        color: charts.ColorUtil.fromDartColor(Colors.blue),
+      ),
+      DeveloperSeries(
+        year: "Enr",
+        developers: 9.8,
+        color: charts.ColorUtil.fromDartColor(Colors.blueAccent),
+      ),
     ];
+    //---------
     final List<DeveloperSeries> data3 = [
-      DeveloperSeries(year: "Sol", developers: 1),
-      DeveloperSeries(year: "Hyd", developers: 99),
-      DeveloperSeries(year: "Eol", developers: 1),
-      DeveloperSeries(year: "Geo", developers: 1),
-      DeveloperSeries(year: "Ther", developers: 2),
-      DeveloperSeries(year: "Bio", developers: 93),
-      DeveloperSeries(year: "Nuc", developers: 0),
+      DeveloperSeries(
+        year: "Cha",
+        developers: 35.7,
+        color: charts.ColorUtil.fromDartColor(Colors.blueGrey),
+      ),
+      DeveloperSeries(
+        year: "Gaz",
+        developers: 22.2,
+        color: charts.ColorUtil.fromDartColor(Colors.grey),
+      ),
+      DeveloperSeries(
+        year: "Bio",
+        developers: 2.4,
+        color: charts.ColorUtil.fromDartColor(Colors.greenAccent),
+      ),
+      DeveloperSeries(
+        year: "Nuc",
+        developers: 9.2,
+        color: charts.ColorUtil.fromDartColor(Colors.orange),
+      ),
+      DeveloperSeries(
+        year: "Hyd",
+        developers: 15.1,
+        color: charts.ColorUtil.fromDartColor(Colors.blue),
+      ),
+      DeveloperSeries(
+        year: "Eol",
+        developers: 7.6,
+        color: charts.ColorUtil.fromDartColor(Colors.lightBlue),
+      ),
+      DeveloperSeries(
+        year: "Sol",
+        developers: 4.5,
+        color: charts.ColorUtil.fromDartColor(Colors.orangeAccent),
+      ),
+      DeveloperSeries(
+        year: "Aut",
+        developers: 3.3,
+        color: charts.ColorUtil.fromDartColor(Colors.lightBlue),
+      ),
     ];
     return DefaultTabController(
       length: 3,
@@ -581,14 +666,14 @@ class _AcceuilState extends State<Acceuil> {
                       tabs: [
                         Tab(
                           child: AppTextLarge(
-                            text: '2005',
+                            text: '2012',
                             color: Theme.of(context).hintColor,
                             size: 16,
                           ),
                         ),
                         Tab(
                           child: AppTextLarge(
-                            text: '2018',
+                            text: '2017',
                             color: Theme.of(context).hintColor,
                             size: 16,
                           ),
@@ -606,7 +691,7 @@ class _AcceuilState extends State<Acceuil> {
                   Container(
                     padding: const EdgeInsets.only(top: 20),
                     width: double.maxFinite,
-                    height: 290,
+                    height: 350,
                     child: TabBarView(
                       children: [
                         DeveloperChart(data: data),
@@ -640,7 +725,7 @@ class _AcceuilState extends State<Acceuil> {
                                 ),
                                 AppTextLarge(
                                   size: 30,
-                                  text: '1',
+                                  text: '67.1',
                                   color: Theme.of(context).hintColor,
                                 ),
                                 AppTextLarge(
@@ -651,7 +736,7 @@ class _AcceuilState extends State<Acceuil> {
                               ],
                             ),
                             AppText(
-                              text: 'Géothermie ',
+                              text: 'Non renouvelables ',
                               color: Theme.of(context).hintColor,
                               size: 16,
                             )
@@ -678,7 +763,7 @@ class _AcceuilState extends State<Acceuil> {
                                 ),
                                 AppTextLarge(
                                   size: 30,
-                                  text: '90',
+                                  text: '32.9',
                                   color: Theme.of(context).hintColor,
                                 ),
                                 AppTextLarge(
@@ -689,7 +774,7 @@ class _AcceuilState extends State<Acceuil> {
                               ],
                             ),
                             AppText(
-                              text: 'Hydrolique ',
+                              text: 'Renouvelables',
                               color: Theme.of(context).hintColor,
                               size: 16,
                             )
@@ -834,10 +919,12 @@ class _AcceuilState extends State<Acceuil> {
 
 class DeveloperSeries {
   final String year;
-  final int developers;
+  final double developers;
+  final charts.Color color;
 
   DeveloperSeries({
     required this.year,
     required this.developers,
+    required this.color,
   });
 }
