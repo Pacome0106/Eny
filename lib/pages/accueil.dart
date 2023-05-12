@@ -548,17 +548,14 @@ class _AcceuilState extends State<Acceuil> {
                                                                     right: 8),
                                                             alignment: Alignment
                                                                 .center,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                20,
-                                                              ),
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .indicatorColor,
-                                                            ),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .indicatorColor),
                                                             height: 30,
                                                             width: 120,
                                                             child: AppTextLarge(

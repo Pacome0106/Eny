@@ -1,4 +1,5 @@
 import 'package:eny/pages/home_page.dart';
+import 'package:eny/screens/response.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/textfield.dart';
@@ -222,16 +223,25 @@ class _SimilatorState extends State<Similator> {
                 ),
                 const SizedBox(height: 40),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    width: double.maxFinite,
-                    height: 50,
-                    color: Colors.black,
-                    child: Center(
-                      child: AppTextLarge(
-                        text: 'Enregistrer',
-                        color: Colors.white,
-                        size: 16,
+                  padding: const EdgeInsets.only(left: 20, right: 20,bottom: 50),
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SegmentsLineChart.withSampleData()),
+                      );
+                    },
+                    child: Container(
+                      width: double.maxFinite,
+                      height: 50,
+                      color: Colors.black,
+                      child: Center(
+                        child: AppTextLarge(
+                          text: 'Enregistrer',
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ),
